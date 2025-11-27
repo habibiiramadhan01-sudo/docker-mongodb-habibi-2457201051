@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: habibi123
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mongo_network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express-container
+    depends_on:
+      - mongo
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: habibi123
+      ME_CONFIG_BASICAUTH_USERNAME: habibi
+      ME_CONFIG_BASICAUTH_PASSWORD: habibi123
+    networks:
+      - mongo_network
+
+networks:
+  mongo_network:
+
+volumes:
+  mongo-data:
